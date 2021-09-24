@@ -6,9 +6,9 @@ def main():
     settings = {"amount_of_attacks": 1000000,
                 "enemy_ac_lower": 11,
                 "enemy_ac_higher": 21,
-                "attack_bonus": 11,
-                "damage_dice": {"d6": 2},
-                "damage_bonus": 8,
+                "attack_bonus": 8,
+                "damage_dice": {"d10": 1},
+                "damage_bonus": 5,
                 "re_rolls": [1, 2]}
 
     stats, min_damage, max_damage = simulate(settings["amount_of_attacks"],
@@ -60,7 +60,8 @@ def main():
     settings_formatted = settings_formatted.replace("]", "")
     settings_formatted = settings_formatted.replace("'", "")
 
-    plt.text(settings["enemy_ac_lower"] - 2.25, max(highest_precision, highest_accuracy) + 16, settings_formatted, verticalalignment="center")
+    plt.text(settings["enemy_ac_lower"] - 2.25, max(highest_precision, highest_accuracy) + 16, settings_formatted,
+             verticalalignment="center")
     plt.show()
 
 
@@ -243,7 +244,7 @@ def roll_to_hit(enemy_ac, attack_bonus, disadvantage=False, advantage=False, cri
 def roll_damage(dice, damage_bonus, dice_multiplier=1, re_rolls=None):
     resulting_dice = []
     for die, amount in dice.items():
-        resulting_dice += roll_dice(int(die[-1]), amount * dice_multiplier, re_rolls)
+        resulting_dice += roll_dice(int(die.replace("d", "")), amount * dice_multiplier, re_rolls)
 
     return sum(resulting_dice) + damage_bonus, resulting_dice, damage_bonus
 
