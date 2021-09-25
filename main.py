@@ -6,9 +6,9 @@ def main():
     settings = {"amount_of_attacks": 1000000,
                 "enemy_ac_lower": 11,
                 "enemy_ac_higher": 21,
-                "attack_bonus": 7,
-                "damage_dice": {"d8": 1},
-                "damage_bonus": 1,
+                "attack_bonus": 9,
+                "damage_dice": {"d6": 1},
+                "damage_bonus": 6,
                 "re_rolls": []}
 
     stats, min_damage, max_damage = simulate(settings["amount_of_attacks"],
@@ -25,6 +25,7 @@ def main():
 
     highest_precision = 0
     highest_accuracy = 0
+    lowest_accuracy = 0
     for data_key in stats[str(settings["enemy_ac_lower"])]:
         x_axis = []
         y_axis = []
@@ -37,6 +38,10 @@ def main():
                 highest_precision = max(highest_precision, stats[enemy_ac][data_key])
             elif data_key == "accuracy":
                 highest_accuracy = max(highest_accuracy, stats[enemy_ac][data_key])
+                if lowest_accuracy == 0:
+                    lowest_accuracy = stats[enemy_ac][data_key]
+                else:
+                    lowest_accuracy = min(lowest_accuracy, stats[enemy_ac][data_key])
 
         if data_key == "mean_damage":
             plt.bar(x_axis, y_axis, color="green", label="Mean damage")
@@ -49,6 +54,8 @@ def main():
     plt.legend()
     plt.xlabel("Enemy AC")
     plt.ylabel("Accuracy/precision as %, damage as absolute")
+    plt.axhline(y=highest_accuracy, color="blue", linestyle="dashed")
+    plt.axhline(y=lowest_accuracy, color="blue", linestyle="dashed")
     settings_formatted = str(settings).replace("{", "")
     settings_formatted = settings_formatted.replace("}", "")
     settings_formatted = settings_formatted.replace("'", "")
