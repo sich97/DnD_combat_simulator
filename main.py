@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 PRECISION = False
 
+
 def main():
     name = "Shortsword +2"
     settings = {"amount_of_attacks": 1000000,
@@ -68,8 +69,11 @@ def main():
     settings_formatted = settings_formatted.replace("[", "")
     settings_formatted = settings_formatted.replace("]", "")
     settings_formatted = settings_formatted.replace("'", "")
+    plt.ylim(0, 100)
+    plt.xticks([x for x in range(settings["enemy_ac_lower"], settings["enemy_ac_higher"] + 1)])
+    plt.yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
 
-    plt.text(settings["enemy_ac_lower"] - 2.25, max(highest_precision, highest_accuracy) + 16, settings_formatted,
+    plt.text(settings["enemy_ac_lower"] - 2.25, 111.25, settings_formatted,
              verticalalignment="center")
     plt.show()
 
