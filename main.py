@@ -68,8 +68,10 @@ def main():
     settings_formatted = settings_formatted.replace("}", "")
     settings_formatted = settings_formatted.replace("'", "")
     settings_formatted = settings_formatted.split(", ")
-    settings_formatted_line1 = str(settings_formatted[:3])
-    settings_formatted_line2 = str(settings_formatted[3:])
+    settings_formatted.pop(1)
+    settings_formatted.pop(1)
+    settings_formatted_line1 = str(settings_formatted[:4])
+    settings_formatted_line2 = str(settings_formatted[4:])
     settings_formatted = settings_formatted_line1 + "\n" + settings_formatted_line2
     settings_formatted = settings_formatted.replace("[", "")
     settings_formatted = settings_formatted.replace("]", "")
