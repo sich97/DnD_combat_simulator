@@ -12,12 +12,17 @@ def main():
                 "attack_bonus": 9,
                 "damage_dice": {"d6": 1},
                 "damage_bonus": 6,
-                "re_rolls": []}
+                "re_rolls": [],
+                "disadvantage": False,
+                "advantage": True,
+                "crit_floor": 20}
 
     stats, min_damage, max_damage = simulate(settings["amount_of_attacks"],
                                              settings["enemy_ac_lower"], settings["enemy_ac_higher"],
                                              settings["attack_bonus"], settings["damage_dice"],
-                                             settings["damage_bonus"], settings["re_rolls"])
+                                             settings["damage_bonus"], settings["re_rolls"],
+                                             settings["disadvantage"], settings["advantage"],
+                                             settings["crit_floor"])
 
     plt.axhline(y=min_damage, color="darkgreen", linestyle='dashed')
     plt.text(settings["enemy_ac_lower"] - 0.75, -9.5, "Min damage: " + str(min_damage),
