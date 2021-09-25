@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 PRECISION = False
 
 def main():
+    name = "Shortsword +2"
     settings = {"amount_of_attacks": 1000000,
                 "enemy_ac_lower": 11,
                 "enemy_ac_higher": 21,
@@ -51,7 +52,7 @@ def main():
         elif data_key == "precision" and PRECISION:
             plt.plot(x_axis, y_axis, color="red", label="Precision on hit", linestyle='solid')
 
-    plt.title("DnD simulation results")
+    plt.title("DnD simulation results - " + name)
     plt.legend()
     plt.xlabel("Enemy AC")
     plt.ylabel("Accuracy/precision as %, damage as absolute")
