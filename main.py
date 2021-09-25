@@ -14,7 +14,7 @@ def main():
                 "damage_bonus": 6,
                 "re_rolls": [],
                 "disadvantage": False,
-                "advantage": True,
+                "advantage": False,
                 "crit_floor": 20}
 
     stats, min_damage, max_damage, damage_total = simulate(settings["amount_of_attacks"],
@@ -124,8 +124,8 @@ def simulate(amount_of_attacks, enemy_ac_lower, enemy_ac_higher, attack_bonus, d
 
         damage_total += sum(damage_rolls)
 
-        accuracy = to_percentage(amount_of_hits, amount_of_attacks, 0)
-        precision = to_percentage(amount_of_crits, amount_of_hits, 0)
+        accuracy = to_percentage(amount_of_hits, amount_of_attacks)
+        precision = to_percentage(amount_of_crits, amount_of_hits)
         mean_damage = 0
         if not (sum(damage_rolls) == 0 or len(damage_rolls) == 0):
             mean_damage = sum(damage_rolls) // len(damage_rolls)
@@ -141,7 +141,7 @@ def simulate(amount_of_attacks, enemy_ac_lower, enemy_ac_higher, attack_bonus, d
     return stats, min_damage, max_damage, damage_total
 
 
-def to_percentage(frequency, max_frequency, precision):
+def to_percentage(frequency, max_frequency):
     decimal = frequency / max_frequency
     decimal *= 100
     percentage = int(round(decimal))
