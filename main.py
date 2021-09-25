@@ -1,6 +1,7 @@
 import random
 import matplotlib.pyplot as plt
 
+PRECISION = False
 
 def main():
     settings = {"amount_of_attacks": 1000000,
@@ -47,7 +48,7 @@ def main():
             plt.bar(x_axis, y_axis, color="green", label="Mean damage")
         elif data_key == "accuracy":
             plt.plot(x_axis, y_axis, color="blue", label="Accuracy", linestyle='solid')
-        elif data_key == "precision":
+        elif data_key == "precision" and PRECISION:
             plt.plot(x_axis, y_axis, color="red", label="Precision on hit", linestyle='solid')
 
     plt.title("DnD simulation results")
