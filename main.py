@@ -6,10 +6,10 @@ def main():
     settings = {"amount_of_attacks": 1000000,
                 "enemy_ac_lower": 11,
                 "enemy_ac_higher": 21,
-                "attack_bonus": 8,
-                "damage_dice": {"d10": 1},
-                "damage_bonus": 5,
-                "re_rolls": [1, 2]}
+                "attack_bonus": 7,
+                "damage_dice": {"d8": 1},
+                "damage_bonus": 1,
+                "re_rolls": []}
 
     stats, min_damage, max_damage = simulate(settings["amount_of_attacks"],
                                              settings["enemy_ac_lower"], settings["enemy_ac_higher"],
@@ -217,6 +217,8 @@ def roll_to_hit(enemy_ac, attack_bonus, disadvantage=False, advantage=False, cri
     if disadvantage == advantage:
         if initial_attack_roll[0] >= crit_floor:
             return True, True, initial_attack_roll[0], attack_bonus
+        elif initial_attack_roll[0] == 1:
+            return False, False, initial_attack_roll[0], attack_bonus
         elif initial_attack_roll[0] + attack_bonus > enemy_ac:
             return True, False, initial_attack_roll[0], attack_bonus
         else:
@@ -227,6 +229,8 @@ def roll_to_hit(enemy_ac, attack_bonus, disadvantage=False, advantage=False, cri
             lowest_roll = min(initial_attack_roll[0], second_attack_roll[0])
             if lowest_roll >= crit_floor:
                 return True, True, lowest_roll, attack_bonus
+            elif lowest_roll == 1:
+                return False, False, lowest_roll, attack_bonus
             elif lowest_roll + attack_bonus > enemy_ac:
                 return True, False, lowest_roll, attack_bonus
             else:
@@ -235,6 +239,8 @@ def roll_to_hit(enemy_ac, attack_bonus, disadvantage=False, advantage=False, cri
             highest_roll = max(initial_attack_roll[0], second_attack_roll[0])
             if highest_roll >= crit_floor:
                 return True, True, highest_roll, attack_bonus
+            elif highest_roll == 1:
+                return False, False, highest_roll, attack_bonus
             elif highest_roll + attack_bonus > enemy_ac:
                 return True, False, highest_roll, attack_bonus
             else:
