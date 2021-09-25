@@ -17,12 +17,12 @@ def main():
                 "advantage": True,
                 "crit_floor": 20}
 
-    stats, min_damage, max_damage = simulate(settings["amount_of_attacks"],
-                                             settings["enemy_ac_lower"], settings["enemy_ac_higher"],
-                                             settings["attack_bonus"], settings["damage_dice"],
-                                             settings["damage_bonus"], settings["re_rolls"],
-                                             settings["disadvantage"], settings["advantage"],
-                                             settings["crit_floor"])
+    stats, min_damage, max_damage, damage_total = simulate(settings["amount_of_attacks"],
+                                                           settings["enemy_ac_lower"], settings["enemy_ac_higher"],
+                                                           settings["attack_bonus"], settings["damage_dice"],
+                                                           settings["damage_bonus"], settings["re_rolls"],
+                                                           settings["disadvantage"], settings["advantage"],
+                                                           settings["crit_floor"])
 
     plt.axhline(y=min_damage, color="darkgreen", linestyle='dashed')
     plt.text(settings["enemy_ac_lower"] - 0.75, -9.5, "Min damage: " + str(min_damage),
@@ -58,7 +58,17 @@ def main():
         elif data_key == "precision" and PRECISION:
             plt.plot(x_axis, y_axis, color="red", label="Precision on hit", linestyle='solid')
 
-    plt.title("DnD simulation results - " + name)
+    damage_total_string_temp = str(damage_total)[::-1]
+    damage_total_string_list = []
+    for number_index in range(len(damage_total_string_temp)):
+        damage_total_string_list.insert(0, damage_total_string_temp[number_index])
+        if (number_index + 1) % 3 == 0:
+            damage_total_string_list.insert(0, " ")
+    damage_total_string = ""
+    for char in damage_total_string_list:
+        damage_total_string += char
+
+    plt.title("DnD simulation results - " + name + ": " + str(damage_total_string))
     plt.legend()
     plt.xlabel("Enemy AC")
     plt.ylabel("Accuracy/precision as %, damage as absolute")
@@ -90,6 +100,7 @@ def simulate(amount_of_attacks, enemy_ac_lower, enemy_ac_higher, attack_bonus, d
     stats = {}
     min_damage = 0
     max_damage = 0
+    damage_total = 0
 
     for enemy_ac in range(enemy_ac_lower, enemy_ac_higher + 1):
         amount_of_hits = 0
@@ -111,6 +122,8 @@ def simulate(amount_of_attacks, enemy_ac_lower, enemy_ac_higher, attack_bonus, d
             else:
                 damage_rolls.append(0)
 
+        damage_total += sum(damage_rolls)
+
         accuracy = to_percentage(amount_of_hits, amount_of_attacks, 0)
         precision = to_percentage(amount_of_crits, amount_of_hits, 0)
         mean_damage = 0
@@ -125,7 +138,7 @@ def simulate(amount_of_attacks, enemy_ac_lower, enemy_ac_higher, attack_bonus, d
         data = {"accuracy": accuracy, "precision": precision, "mean_damage": mean_damage}
         stats[str(enemy_ac)] = data
 
-    return stats, min_damage, max_damage
+    return stats, min_damage, max_damage, damage_total
 
 
 def to_percentage(frequency, max_frequency, precision):
